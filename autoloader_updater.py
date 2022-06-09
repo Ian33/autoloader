@@ -10,11 +10,7 @@ import pyodbc
 import pandas as pd
 from sqlalchemy import create_engine
 import urllib
-# production
-# ip 10.82.12.39
-# dev
-# KCITSQLDEVNRP01
-# 10.82.12.191
+
 conn = pyodbc.connect('Driver={SQL Server};'
                           'Server=KCITSQLDEVNRP01;'
                           'Database=gData;'
