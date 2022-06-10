@@ -305,8 +305,6 @@ def run_upload():
             ''' place holder for dissolved oxygen column'''
             '''gets temperature from record'''
             '''returns df with a temperature column labled as the config water temperature'''
-            print("water temp record df input")
-            print(df.tail(5))
             start_time = df.head(1)
             start_time[config[parameter]['datetime']] = pd.to_datetime(
                 start_time[config[parameter]['datetime']], format='%Y-%m-%d %H:%M:%S', errors='coerce', infer_datetime_format=True)
@@ -316,20 +314,14 @@ def run_upload():
             end_time[config[parameter]['datetime']] = pd.to_datetime(
                 end_time[config[parameter]['datetime']], format='%Y-%m-%d %H:%M:%S', errors='coerce', infer_datetime_format=True)
             end_time = end_time.iloc[0, 0]
-            print(f"start time {start_time}")
-            print(f"send time {end_time}")
             # since variables are imported into parent function you dont need to pass them to this
             # get temperature from record
             existing_data = pd.read_sql_query(f"select {config['water_temperature']['datetime']}, {config['water_temperature']['column']} from {config['water_temperature']['table']} WHERE G_ID = {site_sql_id} AND {config['water_temperature']['datetime']} between ? and ?;", conn, params=[str(start_time), str(end_time)])
-            print("water temp existing temp data")
-            print(existing_data.tail(5))
             # convert df datetime to datetime
             df[config[parameter]['datetime']] = pd.to_datetime(
                 df[config[parameter]['datetime']], format='%Y-%m-%d %H:%M:%S', errors='coerce', infer_datetime_format=True)
             # merge with autoloader df
             df_merged = pd.merge(df, existing_data, left_on=f"{config[parameter]['datetime']}", right_on = f"{config['water_temperature']['datetime']}")
-            print("df merge")
-            print(df_merged.tail(5))
             # drop water temperature datetime
             df_merged = df_merged.drop(columns=[f"{config['water_temperature']['datetime']}"])
             return df_merged
