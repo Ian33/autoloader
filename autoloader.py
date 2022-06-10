@@ -21,7 +21,8 @@ from sqlalchemy import create_engine
 from contextlib import redirect_stdout
 #from sqlalchemy.engine import URL
 pd.options.mode.chained_assignment = None  # default='warn', None is no warn
-
+#### TEST BRANCH COMMENT #####
+### SECOND TEST BRANCH COMMET ####
 # import time
 # import datetime
 # from time import time, sleep
@@ -560,7 +561,7 @@ def run_upload():
             # ONLY USE THIS FOR SQL IMPORT IT ADDS & HOURS
             df = sql_time()
             upload(df)
-            # a comment
+
         if parameter == "water_level":
             df = auto_timestamp_column()
             df = est_column()
