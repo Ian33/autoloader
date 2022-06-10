@@ -560,7 +560,7 @@ def run_upload():
             # ONLY USE THIS FOR SQL IMPORT IT ADDS & HOURS
             df = sql_time()
             upload(df)
-
+            # a comment
         if parameter == "water_level":
             df = auto_timestamp_column()
             df = est_column()
