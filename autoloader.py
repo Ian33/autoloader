@@ -468,35 +468,23 @@ def run_upload():
             df = est_column()
             df = lock_column()
             df = provisional_column()
-
             df = utc_offset_column(utc_offset)
             df = warning_column()
             df = provisional_column()
             df = site_id(site_sql_id)
             # ONLY USE THIS FOR SQL IMPORT IT ADDS & HOURS
             df = sql_time()
-
             df.drop(columns=['stage', 'water_level'], inplace=True)
             upload(df)
 
         if parameter == "dissolved_oxygen":
-            print("initial df")
-            print(df.tail(5))
             # first put into sql time for querying additional values
             # ONLY USE THIS FOR SQL IMPORT IT ADDS & HOURS
             df = sql_time()
-            print("sql time df")
-            print(df.tail(5))
             # get water temperature from record before calculating additional values
             df = water_temperature_record_column()
-            print("water temp record column df")
-            print(df.tail(5))
             # renames water temperature column for dissolved oxygen tables
-            print("do water temp column df")
-            print(df.tail(5))
             df = dissolved_oxygen_water_temperature_column()
-            print("precent o2 df")
-            print(df.tail(5))
             df = dissolved_oxygen_precent_column()
             auto_timestamp_column()
             df = est_column()
@@ -505,11 +493,7 @@ def run_upload():
             df = utc_offset_column(utc_offset)
             df = warning_column()
             df = provisional_column()
-            print("to upload df")
-            print(df.tail(5))
             upload(df)
-            print("post df")
-            print(df.tail(5))
 
         if parameter == "Piezometer":
             df = auto_timestamp_column()
@@ -919,7 +903,6 @@ def run_upload():
         # Time_Check(parameter_table, File_Path, Telemetry_Table, File_Name, CHECK_CSV, utc_offset, sql_prefix)
         cursor.close()
     print("water temperature complete")
-
 
     # Discharge was built with a less advanced layout, I left it this way for now as it doesnt easly fit into the above function
     # call Discharge Table
