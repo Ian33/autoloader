@@ -16,6 +16,7 @@ import win32com.client as win32
 import schedule
 import pyodbc
 import pandas as pd
+import os
 #import sqlalchemy
 from sqlalchemy import create_engine
 from contextlib import redirect_stdout
@@ -30,11 +31,17 @@ pd.options.mode.chained_assignment = None  # default='warn', None is no warn
 
 # thing to run
 # from apscheduler.schedulers.blocking import BlockingScheduler
-
+# get sql_parameters
 config = configparser.ConfigParser()
 
 config.read('gdata_config.ini')
+# get access information
+# save .ini to local documents, this is not the easiest method or the safest but its better then nothing
+# get user name for local drive
+user = os.getlogin()
 
+access = configparser.ConfigParser()
+access.read(r"C:\Users\"+str(user)+"\OneDrive - King County\Documents\access.ini")
 
 def run_upload():
     # this works but will update the file from run X at the start of run Y
@@ -46,12 +53,10 @@ def run_upload():
     #sys.stdout = open("W:\STS\hydro\GAUGE\zTelemetered_Tables\Autoloader_Output.txt", 'w')
     print("Run Start at "+str(pd.to_datetime('today'))+"")
     print("")
-    #10.82.12.39
-    server = "KCITSQLPRNRPX01"
-    driver = "SQL Server"
-    database = "gData"
-    trusted_connection = "yes"
-    #pyodbc_string = 'Driver={'+driver+'};Server='+server+';Database='+database+';Trusted_Connection='+trusted_connection+';'
+    server = access["sql_connection"]["server"]
+    driver = access["sql_connection"]["driver"]
+    database = access["sql_connection"]["database"]
+    trusted_connection = access["sql_connection"]["trusted_connection"]
     conn = pyodbc.connect('Driver={'+driver+'};'
                           'Server='+server+';'
                           'Database='+database+';'
