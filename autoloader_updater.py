@@ -10,6 +10,23 @@ import pyodbc
 import pandas as pd
 from sqlalchemy import create_engine
 import urllib
+import configparser
+import os
+
+# get access information
+# save .ini to local documents, this is not the easiest method or the safest but its better then nothing
+access = configparser.ConfigParser()
+# get user name for local drive
+user = os.getlogin()
+access.read(r"C:\Users\"+str(user)+"\OneDrive - King County\Documents\access.ini")
+server = access["sql_connection"]["server"]
+driver = access["sql_connection"]["driver"]
+database = access["sql_connection"]["database"]
+trusted_connection = access["sql_connection"]["trusted_connection"]
+conn = pyodbc.connect('Driver={'+driver+'};'
+                          'Server='+server+';'
+                          'Database='+database+';'
+                          'Trusted_Connection='+trusted_connection+';')
 
 conn = pyodbc.connect('Driver={SQL Server};'
                           'Server=KCITSQLDEVNRP01;'
