@@ -17,6 +17,7 @@ import schedule
 import pyodbc
 import pandas as pd
 import os
+import os.path
 #import sqlalchemy
 from sqlalchemy import create_engine
 from contextlib import redirect_stdout
@@ -37,11 +38,40 @@ config = configparser.ConfigParser()
 config.read('gdata_config.ini')
 # get access information
 # save .ini to local documents, this is not the easiest method or the safest but its better then nothing
+# program can look in a few places for file
 # get user name for local drive
 user = os.getlogin()
 
 access = configparser.ConfigParser()
-access.read(r"C:\Users\"+str(user)+"\OneDrive - King County\Documents\access.ini")
+
+def get_access(file_name, path):
+    
+    if os.path.exists(f"{path}/{file_name}.ini") == True:
+        access.read(f"{path}/{file_name}.ini")
+        return access
+    else:
+        pass
+file_name = "access"
+path = ""
+
+get_access(file_name, path)
+path = f"C:/Users/{user}/Documents"
+get_access(file_name, path)
+path = f"C:/Users/{user}/OneDrive - King County"
+get_access(file_name, path)
+
+try: # search directery
+    access.read('access.ini')
+except:
+    try: # search one drive 'my documents'
+        access.read(f"C:/Users/{user}/OneDrive - King County/access.ini")
+    except:
+        try: # cearch windows documents
+            access.read(f"C:/Users/{user}/Documents/access.ini")
+            
+        except:
+            print("no access file found")
+
 
 def run_upload():
     # this works but will update the file from run X at the start of run Y
