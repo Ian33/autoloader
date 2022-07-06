@@ -3,6 +3,7 @@
 Created on Mon Aug 30 10:02:36 202
 @author: IHiggins, RHiggins
 """
+#
 # you need to add an IntegrityError: skip that if this occurs jsut skip and try again
 import sys
 import os
